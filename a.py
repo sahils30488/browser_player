@@ -1,4 +1,5 @@
 import os
+import re
 
 from flask import Flask, render_template, request, send_from_directory
 
@@ -6,14 +7,22 @@ app = Flask(__name__)
 MAIN_FOLDER = "/home/sahil/Downloads/"  # Root folder containing subfolders and videos
 
 
+def natural_sort_key(key):
+    """Generate a sorting key for natural sorting."""
+    return [
+        int(text) if text.isdigit() else text.lower()
+        for text in re.split(r"(\d+)", key)
+    ]
+
+
 def get_video_paths(root_folder):
-    """Fetch all video file paths recursively and sort them."""
+    """Fetch all video file paths recursively and sort them naturally."""
     video_paths = []
     for root, dirs, files in os.walk(root_folder):
         relative_path = os.path.relpath(root, root_folder)
-        # Ensure folders and files are sorted
-        dirs.sort()  # Sort directories to maintain order
-        files.sort()  # Sort files alphabetically
+        # Ensure folders and files are sorted naturally
+        dirs.sort(key=natural_sort_key)  # Sort directories to maintain order
+        files.sort(key=natural_sort_key)  # Sort files naturally
         for file in files:
             if file.endswith((".mp4", ".webm", ".avi")):
                 # Create the desired format: relative_path/filename
