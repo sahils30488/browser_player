@@ -195,6 +195,12 @@
           case ",": // Move backward by 10 seconds
             videoPlayer.currentTime -= 5;
             break;
+          case "w": // Move forward by 60 seconds
+            videoPlayer.currentTime += 60;
+            break;
+          case "q": // Move backward by 60 seconds
+            videoPlayer.currentTime -= 60;
+            break;
           case "n": // Move forward by 60 seconds
             videoPlayer.currentTime += 60;
             break;
